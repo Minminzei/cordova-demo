@@ -1,2 +1,2 @@
-// empty
-// codrovaをwebpackで使う設定をやっていないので、一時的なworkaround
+// codrovaをwebpackで使う設定をやっていないので、workaround用の空ファイル
+// いつか削除したい
