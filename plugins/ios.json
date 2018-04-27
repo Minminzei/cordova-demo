@@ -1,0 +1,22 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "demo.cordova"
+    },
+    "phonegap-plugin-barcodescanner": {
+      "PACKAGE_NAME": "demo.cordova"
+    }
+  },
+  "dependent_plugins": {
+    "cordova-plugin-camera": {
+      "PACKAGE_NAME": "demo.cordova"
+    }
+  }
+}

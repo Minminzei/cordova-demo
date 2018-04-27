@@ -1,0 +1,154 @@
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+# You can always add more config options for more control.
+# We've included some commented out config examples here.
+# Just uncomment any of them to get that config option.
+#
+# For full config options, check the docs:
+#    docs.serverless.com
+#
+# Happy Coding!
+
+service: cordova-demo
+
+frameworkVersion: ">=1.3.0"
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+# frameworkVersion: "=X.X.X"
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  stage: stage
+  region: ap-northeast-1
+  memorySize: 512
+  timeout: 40
+  cfLogs: true
+  environment:
+    STAGE: ${opt:stage}
+    NODE_ENV: ${opt:stage}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - "dynamodb:*"
+      Resource:
+        - ${self:custom.dynamodb.${self:custom.stage}}
+        - ${self:custom.dynamodb.${self:custom.stage}}/*
+
+## Custom variables to adopt the stage
+## それぞれのAWS環境に合わせて修正してください
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  dynamodb:
+    production: dynamodbのarn Ex. arn:aws:dynamodb:ap-northeast-1:*******:table/items
+    stage: *******
+
+## Included files
+package:
+  include:
+    - ./node_modules/**
+
+#  stage: dev
+#  region: us-east-1
+
+# you can add statements to the Lambda function's IAM Role here
+#  iamRoleStatements:
+#    - Effect: "Allow"
+#      Action:
+#        - "s3:ListBucket"
+#      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
+#    - Effect: "Allow"
+#      Action:
+#        - "s3:PutObject"
+#      Resource:
+#        Fn::Join:
+#          - ""
+#          - - "arn:aws:s3:::"
+#            - "Ref" : "ServerlessDeploymentBucket"
+
+# you can define service wide environment variables here
+#  environment:
+#    variable1: value1
+
+# you can add packaging information here
+#package:
+#  include:
+#    - include-me.js
+#    - include-me-dir/**
+#  exclude:
+#    - exclude-me.js
+#    - exclude-me-dir/**
+
+functions:
+
+  ##
+  # Items API
+  ##
+  itemsFetch:
+    handler: handler.itemsFetch
+    description: "Fetch items"
+    events:
+      - http:
+          path: /items/fetch
+          method: get
+          integration: lambda
+          cors: true
+
+  itemsGet:
+    handler: handler.itemsGet
+    description: "Get item by id"
+    events:
+      - http:
+          path: /items/{id}
+          method: get
+          integration: lambda
+          cors: true
+          request:
+            parameters:
+              paths:
+                id: true
+  itemsCreate:
+    handler: handler.itemsCreate
+    description: "Create item"
+    events:
+      - http:
+          path: /items
+          method: post
+          integration: lambda
+          cors: true
+
+  itemsUpdate:
+    handler: handler.itemsUpdate
+    description: "Update item"
+    events:
+      - http:
+          path: /items/{id}
+          method: put
+          integration: lambda
+          cors: true
+          request:
+            parameters:
+              paths:
+                id: true
+
+#    The following are a few example events you can configure
+#    NOTE: Please make sure to change your handler code to work with those events
+#    Check the event documentation for details
+#    events:
+#      - http:
+#          path: users/create
+#          method: get
+#      - s3: ${env:BUCKET}
+#      - schedule: rate(10 minutes)
+#      - sns: greeter-topic
+#      - stream: arn:aws:dynamodb:region:XXXXXX:table/foo/stream/1970-01-01T00:00:00.000
+#      - alexaSkill
+#      - iot:
+#          sql: "SELECT * FROM 'some_topic'"
+
+#    Define function environment variables here
+#    environment:
+#      variable2: value2
