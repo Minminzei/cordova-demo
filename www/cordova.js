@@ -1,2 +1,2 @@
-// codrovaをwebpackで使う設定をやっていないので、workaround用の空ファイル
+// codrovaをwebpackで使う設定をやっていないので、エラー回避用の空ファイル
 // いつか削除したい
