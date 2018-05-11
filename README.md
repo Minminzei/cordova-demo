@@ -9,6 +9,8 @@
   - build/native bridge: cordova
   - サーバー構成: AWS serverless
   - フロント: Vue.js/ Vuex
+- DEMO
+  - https://s3-ap-northeast-1.amazonaws.com/test.cordova.demo/index.html/
 
 #### 事前準備
 - cordovaのセットアップ

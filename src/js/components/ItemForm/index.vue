@@ -1,5 +1,10 @@
 <template>
   <v-layout column class="item-form">
+
+    <v-alert v-model="alert" type="error" dismissible>
+      未入力の項目があります
+    </v-alert>
+
     <v-form>
       <v-text-field
         label="商品名"
@@ -15,6 +20,7 @@
         append-icon="party_mode"
         :append-icon-cb="open"
         class="barcode"
+        required
       />
 
 
@@ -34,7 +40,7 @@
       <div class="center">
         <v-btn
           color="info"
-          @click.prevent="onSubmit(item)"
+          @click.prevent="onClick(item)"
         >
           <span v-if="item.id">保存する</span>
           <span v-else>作成する</span>
@@ -70,6 +76,7 @@ export default {
   data() {
     return {
       isOpen: false,
+      alert: false,
     };
   },
   methods: {
@@ -103,6 +110,20 @@ export default {
     },
     close() {
       this.isOpen = false;
+    },
+    onClick() {
+      let isError = false;
+      Object.keys(this.item).some((field) => {
+        if (!this.item[field]) {
+          isError = true;
+          return true;
+        }
+        return false;
+      });
+      this.alert = isError;
+      if (!isError) {
+        this.onSubmit(this.item);
+      }
     },
   },
   components: {
