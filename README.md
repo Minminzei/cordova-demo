@@ -1,5 +1,8 @@
 # Cordova Sample
 
+#### demo
+https://s3-ap-northeast-1.amazonaws.com/test.cordova.demo/index.html/
+
 #### このレポジトリについて
 - 概要
   - ES2015/Vue.jsで作成したWEBを、Cordovaを使ってハイブリットアプリ化するための調査用レポジトリです
@@ -9,8 +12,7 @@
   - build/native bridge: cordova
   - サーバー構成: AWS serverless
   - フロント: Vue.js/ Vuex
-- DEMO
-  - https://s3-ap-northeast-1.amazonaws.com/test.cordova.demo/index.html/
+  - UIコンポーネント: Vuetify
 
 #### 事前準備
 - cordovaのセットアップ
