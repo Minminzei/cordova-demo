@@ -1,7 +1,7 @@
 # Cordova Sample
 
 #### demo
-https://s3-ap-northeast-1.amazonaws.com/test.cordova.demo/index.html/
+https://s3-ap-northeast-1.amazonaws.com/test.cordova.demo/index.html#/
 
 #### このレポジトリについて
 - 概要
