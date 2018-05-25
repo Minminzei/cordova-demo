@@ -25,7 +25,7 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.DEV': true,
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-      'process.env.apiPath': Config.apigateway.endpoint,
+      'process.env.apiPath': `"${Config.apigateway.endpoint}"`,
     }),
   ],
   resolve: {

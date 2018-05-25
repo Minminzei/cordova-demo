@@ -1,7 +1,7 @@
 import URI from 'urijs/src/URI';
 
 const CONFIG = {
-  apiPath: `${process.env.apiPath}`,
+  apiPath: process.env.apiPath,
 };
 
 const createUri = (url, params) => {
