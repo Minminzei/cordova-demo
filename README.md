@@ -26,7 +26,7 @@ https://s3-ap-northeast-1.amazonaws.com/test.cordova.demo/index.html#/
 3. `api/.env.yml`を`api/env.yml`にコピーして1,2で取得した情報を記載
 3. `api`フォルダで`npm run deploy`を実行し、AWSに環境をデプロイする。各人のAWS環境でやってください。
 4. デプロイ完了後、AWS > API Gatewayに`stage-cordova-demo`が作成されているので、ダッシュボードからAPI URLを取得
-5. 取得したURLを`src/libs/api.js`の`CONFIG.apiPath`に記載。
+5. 取得したURLを`api/env.yml`の`apigateway.endpoint`に記載。
 
 #### build
 1. `www`に静的ファイルをビルド

@@ -1,8 +1,7 @@
 import URI from 'urijs/src/URI';
 
 const CONFIG = {
-  // 各人のAWS API Gatewayのエンドポイントを記載してください
-  apiPath: 'https://4347a9cwd3.execute-api.ap-northeast-1.amazonaws.com/stage/',
+  apiPath: `${process.env.apiPath}`,
 };
 
 const createUri = (url, params) => {

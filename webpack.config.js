@@ -1,6 +1,9 @@
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const yaml = require('js-yaml');
+const fs = require('fs');
+const Config = yaml.safeLoad(fs.readFileSync(`${__dirname}/api/env.yml`, 'utf8'));
 
 module.exports = {
   entry: [
@@ -22,6 +25,7 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.DEV': true,
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      'process.env.apiPath': Config.apigateway.endpoint,
     }),
   ],
   resolve: {
