@@ -29,7 +29,7 @@
     <plugin name="cordova-plugin-camera" spec="^4.0.3" />
     <plugin name="cordova-plugin-device" spec="^2.0.2" />
     <plugin name="phonegap-plugin-barcodescanner" spec="^7.1.1" />
+    <engine name="browser" spec="^5.0.3" />
     <engine name="android" spec="^7.0.0" />
     <engine name="ios" spec="^4.5.4" />
-    <engine name="browser" spec="~5.0.3" />
 </widget>

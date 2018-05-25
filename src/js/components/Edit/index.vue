@@ -8,7 +8,7 @@
       </div>
     </div>
     <v-card class="card" v-else>
-      <item-form :item="item" :onSubmit="update" />
+      <item-form :item="item" :image="image" :onSubmit="update" :onUpload="upload" />
     </v-card>
   </v-layout>
 </template>
@@ -26,10 +26,17 @@ export default {
       type: Boolean,
       required: true,
     },
+    image: {
+      type: String,
+      required: false,
+    },
   },
   methods: {
     update(data) {
       this.$emit('onSave', data);
+    },
+    upload(data) {
+      this.$emit('onUpload', data);
     },
   },
   components: {

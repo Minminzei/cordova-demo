@@ -5,6 +5,8 @@ import { routes } from '../libs/router';
 export default connect({
   stateToProps: {
     item: state => state.item,
+    image: state => state.image,
+    loading: state => state.loading,
   },
   methodsToEvents: {
     onCreate({ dispatch }, params) {
@@ -16,6 +18,9 @@ export default connect({
           });
         });
     },
+    onUpload({ dispatch }, params) {
+      dispatch('upload', params);
+    },
   },
   lifecycle: {
     beforeCreate({ commit }) {
@@ -25,6 +30,7 @@ export default connect({
         location: '',
         barcode: '',
       });
+      commit('setImage', null);
     },
   },
 })(CreateComponent);

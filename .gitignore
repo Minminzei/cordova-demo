@@ -1,7 +1,7 @@
 .DS_Store
 node_modules
 .serverless
-serverless.yml
+env.yml
 
 platforms/*
 !platforms/empty

@@ -13,6 +13,28 @@
         required
       />
 
+      <div class="picture">
+        <div class="label">商品写真</div>
+        <div class="image">
+          <span v-if="image">
+            <img :src="image" class="thumbnail" />
+          </span>
+          <span v-else>
+            No Image
+          </span>
+        </div>
+        <div class="button">
+          <label>
+            <v-icon>party_mode</v-icon>
+            <input
+              type="file"
+              @change="onFileChange"
+              class="file-picker"
+            />
+          </label>
+        </div>
+      </div>
+
       <v-text-field
         label="バーコード"
         v-model="item.barcode"
@@ -46,6 +68,20 @@
           <span v-else>作成する</span>
         </v-btn>
       </div>
+
+      <v-btn
+        color="pink"
+        dark
+        fixed
+        bottom
+        right
+        fab
+        @click.prevent="takePicture"
+        v-if="isMobile"
+      >
+        <v-icon>camera</v-icon>
+      </v-btn>
+
     </v-form>
 
     <template v-if="isOpen">
@@ -68,13 +104,22 @@ export default {
       type: Object,
       required: true,
     },
+    image: {
+      type: String,
+      required: false,
+    },
     onSubmit: {
+      type: Function,
+      required: true,
+    },
+    onUpload: {
       type: Function,
       required: true,
     },
   },
   data() {
     return {
+      isMobile: SUPPORT_MOBILE.indexOf(window.device.platform) !== -1,
       isOpen: false,
       alert: false,
     };
@@ -86,9 +131,8 @@ export default {
       }
     },
     open() {
-      const devicePlugin = window.device || {};
       const barcodeScanner = window.cordova.plugins.barcodeScanner || {};
-      if (SUPPORT_MOBILE.indexOf(devicePlugin.platform) !== -1) {
+      if (this.isMobile) {
         const barcodeScanner = window.cordova.plugins.barcodeScanner || {};
         barcodeScanner.scan(this.onDetect, this.close,
           {
@@ -114,7 +158,7 @@ export default {
     onClick() {
       let isError = false;
       Object.keys(this.item).some((field) => {
-        if (!this.item[field]) {
+        if (field !== "image" && !this.item[field]) {
           isError = true;
           return true;
         }
@@ -122,8 +166,30 @@ export default {
       });
       this.alert = isError;
       if (!isError) {
-        this.onSubmit(this.item);
+        this.onSubmit(Object.assign({}, this.item, {image: this.image }));
       }
+    },
+    onFileChange(e) {
+      const file = e.target.files.item(0);
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.onFileChanged(reader.result);
+      };
+    },
+    takePicture() {
+      navigator.camera.getPicture(
+        (uri) => this.onFileChanged(uri),
+        () => {},
+        {
+          quality: 80,
+          destinationType: 0,
+          mediaType: 0,
+        },
+      );
+    },
+    onFileChanged(uri) {
+      this.onUpload({ path: uri });
     },
   },
   components: {
@@ -131,3 +197,36 @@ export default {
   },
 }
 </script>
+<style scoped lang="scss">
+  .item-form {
+    .picture {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: center;
+      border-bottom: 1px solid #999;
+      color: #777;
+      font-size: 16px;
+
+      .label {
+        width: 70px;
+      }
+      .image {
+        flex: 1;
+      }
+      .button {
+        height: 30px;
+        text-align: right;
+        width: 50px;
+        padding-right: 8px;
+      }
+
+      .thumbnail {
+        max-width: 90%;
+      }
+      .file-picker {
+        opacity: 0;
+      }
+    }
+  }
+</style>

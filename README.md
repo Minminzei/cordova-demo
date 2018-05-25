@@ -22,7 +22,8 @@ https://s3-ap-northeast-1.amazonaws.com/test.cordova.demo/index.html#/
 
 #### AWSセットアップ
 1. AWS > dynamodbに`items`テーブルを作成
-2. `api/.serverless.yml`を`api/serverless.yml`にコピーして1で取得したdynamodbのARNを`cutsom:`の該当の箇所に追記
+2. AWS > s3にbucketを作成
+3. `api/.env.yml`を`api/env.yml`にコピーして1,2で取得した情報を記載
 3. `api`フォルダで`npm run deploy`を実行し、AWSに環境をデプロイする。各人のAWS環境でやってください。
 4. デプロイ完了後、AWS > API Gatewayに`stage-cordova-demo`が作成されているので、ダッシュボードからAPI URLを取得
 5. 取得したURLを`src/libs/api.js`の`CONFIG.apiPath`に記載。
@@ -45,10 +46,3 @@ cordova build ios
 #### Document
 - https://cordova.apache.org/docs/en/latest/
 - https://serverless.com/
-
-#### 残タスク
-- [ ] hot reload(WEB)
-- [ ] hot reload(iOS/Android)
-- [ ] hot code push
-- [ ] push notification(AWS SNS)
-- [ ] API認証(AWS Cognito)

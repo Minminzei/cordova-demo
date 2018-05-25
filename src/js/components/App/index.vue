@@ -32,10 +32,16 @@ export default {
         window.device = {};
       }
       if (!window.cordova) {
-        window.cordova = {};
+        window.cordova = {
+          plugins: {},
+        };
       }
-      if (!window.cordova.plugins) {
-        window.cordova.plugins = {};
+      if (!navigator.camera) {
+        navigator.camera = {
+          DestinationType: {},
+          MediaType: {},
+          EncodingType: {},
+        };
       }
       this.prepared = true;
     },

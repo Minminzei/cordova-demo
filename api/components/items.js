@@ -2,12 +2,10 @@
 
 const uuidV1 = require('uuid/v1');
 const AWS = require('aws-sdk');
-const dynamodb = new AWS.DynamoDB({
-  apiVersion: '2012-08-10',
-  region: 'ap-northeast-1',
-});
+const yaml = require('js-yaml');
+const fs = require('fs');
+const Config = yaml.safeLoad(fs.readFileSync(`${__dirname}/../env.yml`, 'utf8'));
 
-const TableName = 'items';
 const PrimaryKey = {
   name: 'id',
   type: 'S',
@@ -44,7 +42,7 @@ const getQuery = (data, primaryId) => {
       },
     },
     ReturnValues: 'ALL_NEW',
-    TableName: TableName,
+    TableName: Config.dynamodb.table,
     UpdateExpression: '',
   };
   const query = [];
@@ -89,8 +87,12 @@ module.exports.get = (data, context) => {
     data: null,
     error: null,
   };
+  const dynamodb = new AWS.DynamoDB({
+    region: Config.dynamodb.region,
+    apiVersion: Config.dynamodb.api_version,
+  });
   const params = {
-    TableName: TableName,
+    TableName: Config.dynamodb.table,
     Key: {
       [PrimaryKey.name]: {
         [PrimaryKey.type]: data.path.id,
@@ -115,8 +117,12 @@ module.exports.fetch = (data, context) => {
     data: [],
     error: null,
   };
+  const dynamodb = new AWS.DynamoDB({
+    region: Config.dynamodb.region,
+    apiVersion: Config.dynamodb.api_version,
+  });
   const params = {
-    TableName: TableName,
+    TableName: Config.dynamodb.table,
   };
   dynamodb.scan(params, (err, data) => {
     if (err) {
@@ -136,6 +142,10 @@ module.exports.create = (data, context) => {
     data: null,
     error: null,
   };
+  const dynamodb = new AWS.DynamoDB({
+    region: Config.dynamodb.region,
+    apiVersion: Config.dynamodb.api_version,
+  });
   const id = uuidV1();
   const body = data.body;
   if (!body.image) {
@@ -156,6 +166,10 @@ module.exports.create = (data, context) => {
 // Update item
 //
 module.exports.update = (data, context) => {
+  const dynamodb = new AWS.DynamoDB({
+    region: Config.dynamodb.region,
+    apiVersion: Config.dynamodb.api_version,
+  });
   const response = {
     data: null,
     error: null,
@@ -169,4 +183,46 @@ module.exports.update = (data, context) => {
     }
     context.done(null, response);
   });
+};
+
+//
+// Upload image
+//
+module.exports.upload = (data, context) => {
+  const response = {
+    data: null,
+    error: null,
+  };
+
+  const S3 = new AWS.S3({
+    region: Config.s3.region,
+    apiVersion: Config.s3.api_version,
+  });
+
+  const string = data.body.path || '';
+  const matches = string.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+  const date = new Date();
+  if (matches.length === 3) {
+    const params = {
+      Bucket: Config.s3.bucket,
+      Key: `img/${date.getTime()}`,
+      ContentType: matches[1],
+      Body: new Buffer(matches[2], 'base64'),
+      ACL: 'public-read',
+      CacheControl: 'max-age=7776000',
+    };
+    S3.upload(params, (err, result) => {
+      if (err) {
+        response.error = err.message;
+      } else {
+        response.data = {
+          path: result.Location,
+        };
+      }
+      context.done(null, response);
+    });
+  } else {
+    response.error = '画像をアップロードできませんでした';
+    context.done(null, response);
+  }
 };
