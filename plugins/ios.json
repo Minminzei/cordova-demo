@@ -12,6 +12,9 @@
     },
     "phonegap-plugin-barcodescanner": {
       "PACKAGE_NAME": "demo.cordova"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "demo.cordova"
     }
   },
   "dependent_plugins": {

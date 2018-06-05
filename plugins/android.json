@@ -8,18 +8,19 @@
   },
   "installed_plugins": {
     "cordova-plugin-device": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
+      "PACKAGE_NAME": "demo.cordova"
     },
     "phonegap-plugin-barcodescanner": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
+      "ANDROID_SUPPORT_V4_VERSION": "27.+",
+      "PACKAGE_NAME": "demo.cordova"
     },
     "cordova-plugin-whitelist": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
+      "PACKAGE_NAME": "demo.cordova"
     }
   },
   "dependent_plugins": {
     "cordova-plugin-camera": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
+      "PACKAGE_NAME": "demo.cordova"
     }
   }
 }
